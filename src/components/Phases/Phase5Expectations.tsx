@@ -39,7 +39,7 @@ const cardVariants = {
     transition: {
       delay: 0.3 + i * 0.18,
       duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   }),
 };
@@ -48,7 +48,7 @@ const lineVariants = {
   hidden: { scaleX: 0 },
   visible: (i: number) => ({
     scaleX: 1,
-    transition: { delay: 0.5 + i * 0.18, duration: 0.5, ease: 'easeOut' },
+    transition: { delay: 0.5 + i * 0.18, duration: 0.5, ease: 'easeOut' as const },
   }),
 };
 

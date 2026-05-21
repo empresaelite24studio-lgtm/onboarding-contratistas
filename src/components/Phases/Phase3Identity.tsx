@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../store/useOnboardingStore';
-import { soundSelect, soundClick } from '../../utils/sounds';
+import { soundSelect } from '../../utils/sounds';
 
 const P = [
   { id:'a', ico:'💡', title:'Innovación sin Límites', desc:'Buscamos nuevas formas de transformar espacios y comunidades.', color:'#f59e0b', border:'rgba(245,158,11,0.35)', bg:'rgba(245,158,11,0.1)' },

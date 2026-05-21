@@ -1,11 +1,12 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useOnboardingStore } from '../store/useOnboardingStore';
+import { AnimatePresence } from 'framer-motion';
+import { useStore } from '../store/useOnboardingStore';
 
 interface Props { children: React.ReactNode; }
 
 export const OnboardingContainer: React.FC<Props> = ({ children }) => {
-  const { progress } = useOnboardingStore();
+  const { index } = useStore();
+  const progress = (index / 8) * 100;
 
   return (
     <div className="app-shell">
