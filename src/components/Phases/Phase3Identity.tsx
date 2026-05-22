@@ -10,23 +10,28 @@ const P = [
 ];
 
 export const Phase3Identity: React.FC = () => {
-  const [sel, setSel] = useState<string[]>([]);
-  const { next, prev } = useStore();
+  const { pillars, setPillars, next, prev } = useStore();
+  const [sel, setSel] = useState<string[]>(pillars);
   const toggle = (id:string) => { soundSelect(); setSel(s => s.includes(id)?s.filter(x=>x!==id):[...s,id]); };
+
+  const handleContinue = () => {
+    setPillars(sel);
+    next();
+  };
 
   return (
     <div className="scene">
       <div className="bg-base" />
       <div className="bg-grid" />
       <div className="orb orb-a" style={{ opacity:0.6 }} />
-
+ 
       <div className="content" style={{ zIndex:10, flexDirection:'column', gap:'clamp(28px,4vh,48px)' }}>
         <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} style={{ textAlign:'center' }}>
           <p className="super shimmer" style={{ marginBottom:12 }}>Tu Identidad en el Estudio</p>
           <h2 className="h2 g">¿Dónde quieres<br />dejar tu huella?</h2>
           <p className="lead" style={{ maxWidth:520, margin:'16px auto 0' }}>Selecciona los pilares que representen tu esencia. Pueden ser uno o todos.</p>
         </motion.div>
-
+ 
         <div className="p3-pillars" style={{ maxWidth:900, width:'100%' }}>
           {P.map((p,i) => (
             <motion.div
@@ -45,10 +50,10 @@ export const Phase3Identity: React.FC = () => {
             </motion.div>
           ))}
         </div>
-
+ 
         <div className="bottom-nav" style={{ position:'relative', bottom:'auto' }}>
           <button className="btn btn-g" onClick={prev}>← Regresar</button>
-          <button className="btn btn-p" disabled={sel.length===0} onClick={next}>Continuar →</button>
+          <button className="btn btn-p" disabled={sel.length===0} onClick={handleContinue}>Continuar →</button>
         </div>
       </div>
     </div>

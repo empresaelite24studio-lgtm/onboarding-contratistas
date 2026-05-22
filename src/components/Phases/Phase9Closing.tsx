@@ -32,7 +32,7 @@ const SOCIALS = [
 ];
 
 export const Phase9Closing: React.FC = () => {
-  const { name, voiceText } = useStore();
+  const { name, voiceText, pillars } = useStore();
 
   useEffect(() => {
     soundWelcome();
@@ -40,6 +40,7 @@ export const Phase9Closing: React.FC = () => {
     sendOnboardingNotification({
       contractorName: name,
       voiceText: voiceText,
+      pillars: pillars,
       completedAt: new Date().toLocaleString('es-CO', {
         dateStyle: 'full',
         timeStyle: 'short',

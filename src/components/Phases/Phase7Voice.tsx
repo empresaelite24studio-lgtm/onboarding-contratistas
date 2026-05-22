@@ -14,6 +14,7 @@ export const Phase7Voice: React.FC = () => {
   const [transcript, setTranscript] = useState('');
   const [supported, setSupported] = useState(true);
   const recogRef = useRef<any>(null);
+  const baseTextRef = useRef('');
 
   useEffect(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -25,7 +26,7 @@ export const Phase7Voice: React.FC = () => {
     r.onresult = (e: any) => {
       let full = '';
       for (let i = 0; i < e.results.length; i++) full += e.results[i][0].transcript;
-      setTranscript(full);
+      setTranscript((baseTextRef.current ? baseTextRef.current + ' ' : '') + full);
     };
     r.onend = () => setListening(false);
     recogRef.current = r;
@@ -34,7 +35,12 @@ export const Phase7Voice: React.FC = () => {
   const toggle = () => {
     if (!recogRef.current) return;
     if (listening) { recogRef.current.stop(); setListening(false); soundMicOff(); }
-    else { recogRef.current.start(); setListening(true); soundMicOn(); }
+    else { 
+      baseTextRef.current = transcript;
+      recogRef.current.start(); 
+      setListening(true); 
+      soundMicOn(); 
+    }
   };
 
   const handleContinue = () => {
@@ -70,23 +76,17 @@ export const Phase7Voice: React.FC = () => {
           </motion.button>
 
           <p className="mic-status">
-            {!supported ? '⚠️ Tu navegador no soporta voz. Escribe abajo.' : listening ? '🔴 Escuchando en tiempo real...' : transcript ? '✅ Grabación lista' : 'Toca el micrófono y habla'}
+            {!supported ? '⚠️ Tu navegador no soporta voz. Escribe abajo.' : listening ? '🔴 Escuchando en tiempo real...' : transcript ? '✅ Listo para continuar' : 'Toca el micrófono para hablar o simplemente escribe abajo'}
           </p>
 
           {/* Transcript / text area */}
-          {supported ? (
-            <div className="transcript-box glass">
-              {transcript || <span style={{ color:'rgba(255,255,255,0.2)', fontStyle:'italic' }}>Tu mensaje aparecerá aquí mientras hablas...</span>}
-            </div>
-          ) : (
-            <textarea
-              className="transcript-box glass"
-              placeholder="Escribe tus expectativas aquí..."
-              value={transcript}
-              onChange={e => setTranscript(e.target.value)}
-              style={{ resize:'none', cursor:'text', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:16, color:'#fff', fontFamily:'Inter,sans-serif', fontSize:'1rem', lineHeight:1.7, padding:'20px 24px', width:'100%', minHeight:90, outline:'none' }}
-            />
-          )}
+          <textarea
+            className="transcript-box glass"
+            placeholder={supported ? "Habla al micrófono o escribe tus expectativas aquí..." : "Escribe tus expectativas aquí..."}
+            value={transcript}
+            onChange={e => setTranscript(e.target.value)}
+            style={{ resize:'none', cursor:'text', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:16, color:'#fff', fontFamily:'Inter,sans-serif', fontSize:'1rem', lineHeight:1.7, padding:'20px 24px', width:'100%', minHeight:120, outline:'none' }}
+          />
 
           <p className="lead" style={{ fontSize:'0.85rem', textAlign:'center', maxWidth:440 }}>
             {transcript ? 'Puedes seguir hablando o editar el texto. Cuando estés listo, continúa.' : 'No hay respuestas incorrectas. Sé auténtic@.'}
